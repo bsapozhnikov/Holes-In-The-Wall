@@ -25,12 +25,12 @@ def createTable(name, attr):
     
 def createTables():
     '(re)creates tables for users, places, and reviews'
-    #drop_table('users')
-    #drop_table('places')
-    #drop_table('reviews')
+    dropTable('users')
+    dropTable('places')
+    dropTable('reviews')
     createTable('users', {'name':'text', 'pw':'text'}) ##not sure what else needs to go here
     createTable('places', {'name':'text', 'lat':'text', 'lng':'text', 'adderID':'integer', 'imgsrc':'text'})
-    createTable('reviews', {'title':'text', 'content':'text', 'authorID':'integer','placeID':'integer'})
+    createTable('reviews', {'title':'text', 'content':'text', 'rating':'integer', 'authorID':'integer','placeID':'integer'})
 
 
 def addUser(name, pw):
@@ -47,10 +47,10 @@ def addPlace(name, lat, lng, adderID, imgsrc):
     conn.commit()
     print "added %s to places" % (name)
 
-def addReview(title, content, authorID, placeID):
+def addReview(title, content, rating, authorID, placeID):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    c.execute("INSERT INTO reviews VALUES ('%s','%s','%s','%s')" %(title, content, authorID, placeID))
+    c.execute("INSERT INTO reviews VALUES ('%s','%s','%s', '%s','%s')" %(title, content, rating, authorID, placeID))
     conn.commit()
     print "added %s to reviews" % (title)
 
@@ -87,6 +87,6 @@ def getReviews():
     c = conn.cursor()
     reviews = {}
     for row in c.execute("SELECT oid,* FROM reviews"):
-        content = {'title':row[1],'content':row[2],'authorID':row[3],'placeID':row[4]}
+        content = {'title':row[1],'content':row[2],'rating':row[3],'authorID':row[4],'placeID':row[5]}
         reviews[row[0]]=content
     return reviews
