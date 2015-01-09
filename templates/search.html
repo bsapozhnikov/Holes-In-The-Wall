@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>Hole In The Wall</title>
+    <link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <ul id="menu">
+      <div id="name">{{name}}</div>
+      <li><a href="../templates/logout.html">Logout</a></li>
+      <li><a href="../templates/settings.html">Change Settings</a></li>
+      <li><a href="../templates/about.html">About</a></li>
+      <li><a href="../templates/search.html">Search</a></li>
+      <li><a href="../templates/reviews.html">Reviews</a></li>
+    </ul>
+    <p class="box">
+      Hello and welcome to Hole In The Wall!
+      <form>
+	Search to find a Hole In The Wall already on our app:<br>
+	<input type="text" name="holeInTheWall">
+	<br><br>
+	<input type="submit" value="Search">
+      </form>	
+    </p>
+    {% include 'messages.html' %}
+  </body>
+</html>
