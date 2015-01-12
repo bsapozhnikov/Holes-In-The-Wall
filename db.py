@@ -68,11 +68,11 @@ def existingName(name):
 def updatePass(name, oldpw, newpw):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    UPDATE users
-    SET pw = newpw
-    WHERE name = name and pw = oldpw 
+
+    c.execute("UPDATE users SET pw = ? WHERE name = ? and pw = ?", (newpw,name,oldpw)) 
     conn.commit()
     print "updated password"
+    
 def addPlace(name, lat, lng, adderID, imgsrc):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
