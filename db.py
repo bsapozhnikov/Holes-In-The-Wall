@@ -43,7 +43,7 @@ def validateUser(name, pw):
         return True
 
 def addUser(name, pw):
-    if existingName(name) == False: 
+    if not existingName(name) and validateUser(name,pw): 
         conn = sqlite3.connect('data.db')
         c = conn.cursor()
         c.execute("INSERT INTO users VALUES ('%s','%s')" %(name,pw))
@@ -65,6 +65,14 @@ def existingName(name):
         else:
             return False
 
+def updatePass(name, oldpw, newpw):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    UPDATE users
+    SET pw = newpw
+    WHERE name = name and pw = oldpw 
+    conn.commit()
+    print "updated password"
 def addPlace(name, lat, lng, adderID, imgsrc):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
