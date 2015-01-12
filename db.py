@@ -6,46 +6,46 @@ c = conn.cursor()
 
 
 ##generic methods taken from blog assignment
-def dropTable(name):
-    c.execute("DROP TABLE %s" % (name))
+def dropTable(tablename):
+    c.execute("DROP TABLE %s" % (tablename))
     conn.commit()
-    print ("DROP TABLE %s" % (name))
+    print ("DROP TABLE %s" % (tablename))
     
-def createTable(name, attr):
+def createTable(tablename, attr):
     """Creates a table in the database \'blog.db\'
     1st parameter - name of table (string)
     2nd parameter - Dictionary with keys and types as values'
     """
-    print name
+    print tablename
     L = [k+' '+attr[k] for k in attr.keys()]
     s = ','.join(L)
-    c.execute("CREATE TABLE %s(%s)" % (name, s))
+    c.execute("CREATE TABLE %s(%s)" % (tablename, s))
     conn.commit()
-    print ("CREATE TABLE %s(%s)") % (name, s)
+    print ("CREATE TABLE %s(%s)") % (tablename, s)
     
 def createTables():
     '(re)creates tables for users, places, and reviews'
-    dropTable('users')
-    dropTable('places')
-    dropTable('reviews')
-    createTable('users', {'name':'text', 'pw':'text'}) ##not sure what else needs to go here
-    createTable('places', {'name':'text', 'lat':'text', 'lng':'text', 'adderID':'integer', 'imgsrc':'text'})
+    ##dropTable('users')
+    ##dropTable('places')
+    ##dropTable('reviews')
+    createTable('users', {'username':'text', 'pw':'text'}) ##not sure what else needs to go here
+    createTable('places', {'placename':'text', 'lat':'text', 'lng':'text', 'adderID':'integer', 'imgsrc':'text'})
     createTable('reviews', {'title':'text', 'content':'text', 'rating':'integer', 'authorID':'integer','placeID':'integer'})
 
 
-def addUser(name, pw):
+def addUser(username, pw):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    c.execute("INSERT INTO users VALUES ('%s','%s')" %(name,pw))
+    c.execute("INSERT INTO users VALUES ('%s','%s')" %(username,pw))
     conn.commit()
-    print "added %s to users" % (name)
+    print "added %s to users" % (username)
 
-def addPlace(name, lat, lng, adderID, imgsrc):
+def addPlace(placename, lat, lng, adderID, imgsrc):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    c.execute("INSERT INTO places VALUES ('%s','%s','%s','%s','%s')" %(name, lat, lng, adderID, imgsrc))
+    c.execute("INSERT INTO places VALUES ('%s','%s','%s','%s','%s')" %(placename, lat, lng, adderID, imgsrc))
     conn.commit()
-    print "added %s to places" % (name)
+    print "added %s to places" % (placename)
 
 def addReview(title, content, rating, authorID, placeID):
     conn = sqlite3.connect('data.db')
@@ -63,7 +63,7 @@ def getUsers():
     c = conn.cursor()
     users = {}
     for row in c.execute("SELECT oid,* FROM users"):
-        content = {'name':row[1],'pw':row[2]}
+        content = {'username':row[1],'pw':row[2]}
         users[row[0]]=content
     return users
         
@@ -75,7 +75,7 @@ def getPlaces():
     c = conn.cursor()
     places = {}
     for row in c.execute("SELECT oid,* FROM places"):
-        content = {'name':row[1],'lat':row[2],'lng':row[3],'adderID':row[4],'imgsrc':row[5]}
+        content = {'placename':row[1],'lat':row[2],'lng':row[3],'adderID':row[4],'imgsrc':row[5]}
         places[row[0]]=content
     return places
 
