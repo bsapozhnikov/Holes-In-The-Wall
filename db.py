@@ -4,8 +4,6 @@ conn = sqlite3.connect("data.db")
 
 c = conn.cursor()
 
-
-##generic methods taken from blog assignment
 def dropTable(name):
     c.execute("DROP TABLE %s" % (name))
     conn.commit()
@@ -31,14 +29,41 @@ def createTables():
     createTable('users', {'name':'text', 'pw':'text'}) ##not sure what else needs to go here
     createTable('places', {'name':'text', 'lat':'text', 'lng':'text', 'adderID':'integer', 'imgsrc':'text'})
     createTable('reviews', {'title':'text', 'content':'text', 'authorID':'integer','placeID':'integer'})
-
+    
+def validateUser(name, pw):
+    for row in c.execute("SELECT oid,* FROM users"):
+        content = {'name':row[1],'pw':row[2]}
+        users[row[0]]=content
+    for x in users:
+        if (len(name) <= 5):
+            return False
+        if (len(pw) <= 5):
+            return False
+    else:
+        return True
 
 def addUser(name, pw):
+    if existingName(name) == False: 
+        conn = sqlite3.connect('data.db')
+        c = conn.cursor()
+        c.execute("INSERT INTO users VALUES ('%s','%s')" %(name,pw))
+        conn.commit()
+        print "added %s to users" % (name)
+    else:
+        print "Username already taken. Please enter a different username"
+
+def existingName(name):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    c.execute("INSERT INTO users VALUES ('%s','%s')" %(name,pw))
-    conn.commit()
-    print "added %s to users" % (name)
+    users = {}
+    for row in c.execute("SELECT oid,* FROM users"):
+        content = {'name':row[1],'pw':row[2]}
+        users[row[0]]=content
+    for x in users:
+        if (name == x):
+            return True
+        else:
+            return False
 
 def addPlace(name, lat, lng, adderID, imgsrc):
     conn = sqlite3.connect('data.db')
