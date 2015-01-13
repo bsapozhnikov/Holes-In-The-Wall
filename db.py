@@ -4,81 +4,80 @@ conn = sqlite3.connect("data.db")
 
 c = conn.cursor()
 
-def dropTable(name):
-    c.execute("DROP TABLE %s" % (name))
+def dropTable(tablename):
+    c.execute("DROP TABLE %s" % (tablename))
     conn.commit()
-    print ("DROP TABLE %s" % (name))
+    print ("DROP TABLE %s" % (tablename))
     
-def createTable(name, attr):
+def createTable(tablename, attr):
     """Creates a table in the database \'blog.db\'
     1st parameter - name of table (string)
     2nd parameter - Dictionary with keys and types as values'
     """
-    print name
+    print tablename
     L = [k+' '+attr[k] for k in attr.keys()]
     s = ','.join(L)
-    c.execute("CREATE TABLE %s(%s)" % (name, s))
+    c.execute("CREATE TABLE %s(%s)" % (tablename, s))
     conn.commit()
-    print ("CREATE TABLE %s(%s)") % (name, s)
+    print ("CREATE TABLE %s(%s)") % (tablename, s)
     
 def createTables():
     '(re)creates tables for users, places, and reviews'
     #drop_table('users')
     #drop_table('places')
     #drop_table('reviews')
-    createTable('users', {'name':'text', 'pw':'text'}) ##not sure what else needs to go here
-    createTable('places', {'name':'text', 'lat':'text', 'lng':'text', 'adderID':'integer', 'imgsrc':'text'})
+    createTable('users', {'username':'text', 'pw':'text'}) ##not sure what else needs to go here
+    createTable('places', {'placename':'text', 'lat':'text', 'lng':'text', 'adderID':'integer', 'imgsrc':'text'})
     createTable('reviews', {'title':'text', 'content':'text', 'authorID':'integer','placeID':'integer'})
     
 def validateUser(name, pw):
     for row in c.execute("SELECT oid,* FROM users"):
-        content = {'name':row[1],'pw':row[2]}
+        content = {'username':row[1],'pw':row[2]}
         users[row[0]]=content
     for x in users:
-        if (len(name) <= 5):
+        if (len(username) <= 5):
             return False
         if (len(pw) <= 5):
             return False
     else:
         return True
 
-def addUser(name, pw):
-    if not existingName(name) and validateUser(name,pw): 
+def addUser(username, pw):
+    if not existingName(username) and validateUser(username,pw): 
         conn = sqlite3.connect('data.db')
         c = conn.cursor()
-        c.execute("INSERT INTO users VALUES ('%s','%s')" %(name,pw))
+        c.execute("INSERT INTO users VALUES ('%s','%s')" %(username,pw))
         conn.commit()
-        print "added %s to users" % (name)
+        print "added %s to users" % (username)
     else:
         print "Username already taken. Please enter a different username"
 
-def existingName(name):
+def existingName(username):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
     users = {}
     for row in c.execute("SELECT oid,* FROM users"):
-        content = {'name':row[1],'pw':row[2]}
+        content = {'username':row[1],'pw':row[2]}
         users[row[0]]=content
     for x in users:
-        if (name == x):
+        if (username == x):
             return True
         else:
             return False
 
-def updatePass(name, oldpw, newpw):
+def updatePass(username, oldpw, newpw):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-
-    c.execute("UPDATE users SET pw = ? WHERE name = ? and pw = ?", (newpw,name,oldpw)) 
+    c.execute("UPDATE users SET pw = ? WHERE username = ? and pw = ?", (newpw,username,oldpw)) 
     conn.commit()
     print "updated password"
     
-def addPlace(name, lat, lng, adderID, imgsrc):
+def addPlace(placename, lat, lng, adderID, imgsrc):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    c.execute("INSERT INTO places VALUES ('%s','%s','%s','%s','%s')" %(name, lat, lng, adderID, imgsrc))
+    c.execute("INSERT INTO places VALUES ('%s','%s','%s','%s','%s')" %(placename, lat, lng, adderID, imgsrc))
     conn.commit()
-    print "added %s to places" % (name)
+    print "added %s to places" % (placename)
 
 def addReview(title, content, authorID, placeID):
     conn = sqlite3.connect('data.db')
@@ -96,7 +95,7 @@ def getUsers():
     c = conn.cursor()
     users = {}
     for row in c.execute("SELECT oid,* FROM users"):
-        content = {'name':row[1],'pw':row[2]}
+        content = {'username':row[1],'pw':row[2]}
         users[row[0]]=content
     return users
         
@@ -108,7 +107,7 @@ def getPlaces():
     c = conn.cursor()
     places = {}
     for row in c.execute("SELECT oid,* FROM places"):
-        content = {'name':row[1],'lat':row[2],'lng':row[3],'adderID':row[4],'imgsrc':row[5]}
+        content = {'placename':row[1],'lat':row[2],'lng':row[3],'adderID':row[4],'imgsrc':row[5]}
         places[row[0]]=content
     return places
 
