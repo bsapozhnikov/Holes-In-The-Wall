@@ -13,13 +13,13 @@ def login():
     if "user" in session:
         
         flash("Please logout first to log into another account!")
-        return render_template('home.html',name=db.getName(session['user']))
+        return render_template('home.html',name=db2.getName(session['user']))
     if request.method=='GET':
         return render_template('login.html')
     else:
         user=request.form['user']
         pw=request.form['pass']
-        if db.validateUser(user,pw):
+        if db2.validateUser(user,pw):
             session['user']=user
             if 'return_to' in session:
                 s = session['return_to']
@@ -35,7 +35,7 @@ def register():
     if "user" in session:
         
         flash("Please logout first to register another account!")
-        return render_template('home.html',name=db.getName(session['user']))
+        return render_template('home.html',name=db2.getName(session['user']))
     if request.method=='GET':
         return render_template('register.html')
     else:
@@ -47,12 +47,12 @@ def register():
         if name == "" or user == "" or pw =="" or color == "":
             flash('Please fill in all the fields')
             return redirect('/register')
-        elif db.existingName(user)== False:
+        elif db2.existingName(user)== False:
             flash('Your username is already taken!')
             return redirect('/register')
         else:
             
-            if db.registerUser(user,name,color,pw):
+            if db2.registerUser(user,name,color,pw):
                 return redirect('/login')
             else:
                 return redirect('/about') ##should be replaced with flash
@@ -62,12 +62,23 @@ def logout():
     session.pop('user',None)
     return redirect('/login')
 
+@app.route('/search')
+def search():
+    return render_template('search.html')
+
+@app.route('/reviews')
+def review():
+    if 'user' not in session:
+        return render_template('reviews.html')
+    else:
+        return render_template('reviews.html')
+
 @app.route('/about')
 def about():
     if 'user' not in session:
         return render_template('about.html')
     else:
-        return render_template('about.html',user=session['user'],name=db.getName(session['user']))
+        return render_template('about.html',user=session['user'],name=db2.getName(session['user']))
 
 @app.route('/home')
 def home():
@@ -75,7 +86,7 @@ def home():
         session['return_to']='/home'
         return redirect('/login')
     else:
-        return render_template('home.html',name=db.getName(session['user']))
+        return render_template('home.html',name=db2.getName(session['user']))
         
 @app.route('/settings',methods=['GET','POST'])
 def settings():
@@ -84,7 +95,7 @@ def settings():
         return redirect('/login')
     else:
         if request.method=='GET':
-            return render_template('settings.html',name=db.getName(session['user']))
+            return render_template('settings.html',name=db2.getName(session['user']))
         else:
             
             ##get new info and update
@@ -93,7 +104,7 @@ def settings():
             pw = request.form['oldpw']
             newpw = request.form['newpw']
             color = request.form['color']
-            if pw == "" or not db.updateUserInfo(user,pw,newpw,name,color):
+            if pw == "" or not db2.updateUserInfo(user,pw,newpw,name,color):
                 flash("Please enter your correct current password to make any changes!")
                 return redirect("/settings")
             else:

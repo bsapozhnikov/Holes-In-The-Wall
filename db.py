@@ -66,6 +66,11 @@ def getUsers():
         content = {'name':row[1],'pw':row[2]}
         users[row[0]]=content
     return users
+
+def validateUser(user, pw):
+    '''returns a boolean '''
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
         
 def getPlaces():
     '''returns dictionary of places: 
