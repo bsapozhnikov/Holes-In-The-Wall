@@ -8,7 +8,7 @@ def dropTable(tablename):
     c.execute("DROP TABLE %s" % (tablename))
     conn.commit()
     print ("DROP TABLE %s" % (tablename))
-    
+
 def createTable(tablename, attr):
     """Creates a table in the database \'blog.db\'
     1st parameter - name of table (string)
@@ -20,7 +20,7 @@ def createTable(tablename, attr):
     c.execute("CREATE TABLE %s(%s)" % (tablename, s))
     conn.commit()
     print ("CREATE TABLE %s(%s)") % (tablename, s)
-    
+
 def createTables():
     '(re)creates tables for users, places, and reviews'
     #drop_table('users')
@@ -29,7 +29,7 @@ def createTables():
     createTable('users', {'username':'text', 'pw':'text'}) ##not sure what else needs to go here
     createTable('places', {'placename':'text', 'lat':'text', 'lng':'text', 'adderID':'integer', 'imgsrc':'text'})
     createTable('reviews', {'title':'text', 'content':'text', 'authorID':'integer','placeID':'integer'})
-    
+
 def validateUser(name, pw):
     for row in c.execute("SELECT oid,* FROM users"):
         content = {'username':row[1],'pw':row[2]}
@@ -71,7 +71,7 @@ def updatePass(username, oldpw, newpw):
     c.execute("UPDATE users SET pw = ? WHERE username = ? and pw = ?", (newpw,username,oldpw)) 
     conn.commit()
     print "updated password"
-    
+
 def addPlace(placename, lat, lng, adderID, imgsrc):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
@@ -79,14 +79,14 @@ def addPlace(placename, lat, lng, adderID, imgsrc):
     conn.commit()
     print "added %s to places" % (placename)
 
-def addReview(title, content, authorID, placeID):
+def addReview(title, content, rating, authorID, placeID):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    c.execute("INSERT INTO reviews VALUES ('%s','%s','%s','%s')" %(title, content, authorID, placeID))
+    c.execute("INSERT INTO reviews VALUES ('%s','%s','%s', '%s','%s')" %(title, content, rating, authorID, placeID))
     conn.commit()
     print "added %s to reviews" % (title)
 
-    
+
 def getUsers():
     '''returns dictionary of users: 
     the key is the unique id
@@ -103,7 +103,7 @@ def validateUser(user, pw):
     '''returns a boolean '''
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-        
+
 def getPlaces():
     '''returns dictionary of places: 
     the key is the unique id
@@ -124,6 +124,6 @@ def getReviews():
     c = conn.cursor()
     reviews = {}
     for row in c.execute("SELECT oid,* FROM reviews"):
-        content = {'title':row[1],'content':row[2],'authorID':row[3],'placeID':row[4]}
+        content = {'title':row[1],'content':row[2],'rating':row[3],'authorID':row[4],'placeID':row[5]}
         reviews[row[0]]=content
     return reviews
