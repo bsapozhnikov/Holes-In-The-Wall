@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>Hole In The Wall</title>
+    <link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
+  </head>
+  <body>
+    <ul id="menu">
+      <div id="name">{{name}}</div>
+      <li><a href="logout">Logout</a></li>
+      <li><a href="settings">Change Settings</a></li>
+      <li><a href="about">About</a></li>
+      <li><a href="search">Search</a></li>
+      <li><a href="reviews">Reviews</a></li>
+    </ul>
+    <p class="box">
+      Hello and welcome to Hole In The Wall!
+      <form>
+	Please add a review:
+	<br>
+	How many stars would you give this establishment?
+	<br>
+	<input type="radio" name="stars" value="1">1
+	<br>
+	<input type="radio" name="stars" value="2">2
+	<br>
+	<input type="radio" name="stars" value="3">3
+	<br>
+	<input type="radio" name="stars" value="4">4
+	<br>
+	<input type="radio" name="stars" value="5">5
+	<br><br>
+	Comments:
+	<br>
+	<textarea name="myTextBox" cols="50" rows="5">
+	Enter your comments...
+	</textarea>
+	<br><br>
+	<input type="submit" value="Submit">
+      </form>	
+    </p>
+    {% include 'messages.html' %}
+  </body>
+</html>
