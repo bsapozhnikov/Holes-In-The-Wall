@@ -30,18 +30,25 @@ def createTables():
     createTable('places', {'placename':'text', 'lat':'text', 'lng':'text', 'adderID':'integer', 'imgsrc':'text'})
     createTable('reviews', {'title':'text', 'content':'text', 'authorID':'integer','placeID':'integer'})
 
-def validateUser(name, pw):
-    for row in c.execute("SELECT oid,* FROM users"):
-        content = {'username':row[1],'pw':row[2]}
-        users[row[0]]=content
-    for x in users:
-        if (len(username) <= 5):
-            return False
-        if (len(pw) <= 5):
-            return False
-    else:
-        return True
-
+def validateUser(user, pw):
+   # for row in c.execute("SELECT oid,* FROM users"):
+    #    content = {'username':row[1],'pw':row[2]}
+     #   users[row[0]]=content
+   # for x in users:
+   #     if (len(username) <= 5):
+    #        return False
+     #   if (len(pw) <= 5):
+      #      return False
+   # else:
+    #    return True
+    users = getUsers()
+    ##print [x for x in users.keys()]
+    for userID in users.keys():
+        some = users[userID]
+        if some['username'].equals(user):
+            return some['pw'].equals(pw)
+    return False
+    
 def addUser(username, pw):
     if not existingName(username) and validateUser(username,pw): 
         conn = sqlite3.connect('data.db')
@@ -98,11 +105,6 @@ def getUsers():
         content = {'username':row[1],'pw':row[2]}
         users[row[0]]=content
     return users
-
-def validateUser(user, pw):
-    '''returns a boolean '''
-    conn = sqlite3.connect('data.db')
-    c = conn.cursor()
 
 def getPlaces():
     '''returns dictionary of places: 
