@@ -62,15 +62,36 @@ def logout():
     session.pop('user',None)
     return redirect('/login')
 
-@app.route('/search')
+@app.route('/search',methods=['GET','POST'])
 def search():
-    return render_template('search.html')
+    if request.method=='GET':
+        return render_template('search.html')
+    else:
+        ## get the query from the HTML form
+        query = request.form['holeInTheWall']
+        ## get the places from the database
+        places = db.getPlaces()
+        ## sort the dictionary into a list
+        results = ['I don\'t ','know what ','should go here - ','what\'s our search algorithm?']## ???
+        ## pass sorted list to template
+        return render_template('search.html',results=results)
 
-@app.route('/reviews')
+@app.route('/reviews',methods=['GET','POST'])
 def review():
-    if 'user' not in session:
+    if request.method=='GET':
         return render_template('reviews.html')
     else:
+        ## get the review from the HTML form
+        rating = request.form['stars']
+        content = request.form['myTextBox']
+        authorID = session['user'] ##assumes user is in session (this is a protected page) and the value is set the user's ID
+        title = "no title" ## no comment title in HTML form
+        placeID = 0 ## no placeID in HTML form
+        ## add comment to database
+        db.addReview(title,content,int(rating),authorID,placeID)
+        ## flash success
+        flash('Thank you for your review!')
+        ## return template
         return render_template('reviews.html')
 
 @app.route('/about')
