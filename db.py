@@ -45,12 +45,12 @@ def validateUser(user, pw):
     ##print [x for x in users.keys()]
     for userID in users.keys():
         some = users[userID]
-        if some['username'].equals(user):
-            return some['pw'].equals(pw)
+        if some['username'] == user:
+            return some['pw'] == pw
     return False
     
 def addUser(username, pw):
-    if not existingName(username) and validateUser(username,pw): 
+    if not existingName(username):## removed for testing purposes ## and validateUser(username,pw): 
         conn = sqlite3.connect('data.db')
         c = conn.cursor()
         c.execute("INSERT INTO users VALUES ('%s','%s')" %(username,pw))
@@ -69,8 +69,10 @@ def existingName(username):
     for x in users:
         if (username == x):
             return True
-        else:
-            return False
+            ## I (Brian) don't this is right
+            ##else:
+            ##     return False
+    return False ## I think this IS right
 
 def updatePass(username, oldpw, newpw):
     conn = sqlite3.connect('data.db')
@@ -94,6 +96,14 @@ def addReview(title, content, rating, authorID, placeID):
     print "added %s to reviews" % (title)
 
 
+def getUser(user):
+    '''returns user as a dictionary'''
+    users = getUsers()
+    for userID in users.keys():
+        some = users[userID]
+        if some['username'] == user:
+            return some
+    
 def getUsers():
     '''returns dictionary of users: 
     the key is the unique id
