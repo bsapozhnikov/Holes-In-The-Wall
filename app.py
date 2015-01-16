@@ -99,7 +99,7 @@ def about():
     if 'user' not in session:
         return render_template('about.html')
     else:
-        return render_template('about.html',user=session['user'],name=db.getName(session['user']))
+        return render_template('about.html',user=session['user'],name=db.getUser(session['user']))
 
 @app.route('/home')
 def home():
@@ -107,7 +107,7 @@ def home():
         session['return_to']='/home'
         return redirect('/login')
     else:
-        return render_template('home.html',name=db.getName(session['user']))
+        return render_template('home.html',name=db.getUser(session['user']))
         
 @app.route('/settings',methods=['GET','POST'])
 def settings():
@@ -116,7 +116,7 @@ def settings():
         return redirect('/login')
     else:
         if request.method=='GET':
-            return render_template('settings.html',name=db.getName(session['user']))
+            return render_template('settings.html',name=db.getUser(session['user']))
         else:
             
             ##get new info and update
