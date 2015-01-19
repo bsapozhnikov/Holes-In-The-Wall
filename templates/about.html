@@ -6,7 +6,7 @@
   <body>
     <ul id="menu">
       {% if user %}
-      <div id="name">{{name}}</div>
+      <div id="name">{{name.username}}</div>
       <li><a href="/logout">Logout</a></li>
       <li><a href="/home">Home</a></li>
       <li><a href="/settings">Change Settings</a></li>
