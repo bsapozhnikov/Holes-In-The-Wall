@@ -26,7 +26,7 @@
 	<ul>
 	{% for result in results %}
 	    <li><a href="/reviews/{{result}}">{{places[result]}}</a></li>
-	    {% endfor %}
+	{% endfor %}
 	</ul>
     </p>
     {% include 'messages.html' %}
