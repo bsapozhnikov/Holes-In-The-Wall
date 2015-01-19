@@ -62,22 +62,44 @@ def logout():
     session.pop('user',None)
     return redirect('/login')
 
+def findPlaces(places,query):
+    '''return list of places from dictionary, ordered based on query'''
+    if query=='':
+        return [x for x in places]
+    else:
+        ## split the query into a set of keywords
+        qWords = set(query.split(' '))
+        matches = {}
+        ## for each place, split the name into a set of words
+        ## count the number of words in common with the keywords
+        ## make a dictionary with key = place key and value = number of matches
+        ## sort dictionary in decreasing order of matches
+        ## return places as list in that order
+        for oid in places.keys():
+            pWords = set(places[oid]['placename'].split(' '))
+            matches[oid] = len(qWords & pWords)
+        return [x[0] for x in sorted(matches.items(), key=lambda y: y[1], reverse=True)]
+        ##return ['I don\'t ','know what ','should go here - ','what\'s our search algorithm?']## ???
+
 @app.route('/search',methods=['GET','POST'])
 def search():
     if request.method=='GET':
-        return render_template('search.html')
+        return render_template('search.html', name=db.getUser(session['user']))
     else:
         ## get the query from the HTML form
         query = request.form['holeInTheWall']
+        print "The query is '%s'"%query
         ## get the places from the database
         places = db.getPlaces()
         ## sort the dictionary into a list
-        results = ['I don\'t ','know what ','should go here - ','what\'s our search algorithm?']## ???
+        results = findPlaces(places,query)
+        ##results = ['I don\'t ','know what ','should go here - ','what\'s our search algorithm?']## ???
         ## pass sorted list to template
-        return render_template('search.html',results=results)
+        return render_template('search.html',places=places, results=results, name=db.getUser(session['user']))
 
 @app.route('/reviews',methods=['GET','POST'])
-def review():
+@app.route('/reviews/<oid>') ## I'm just putting this here for now        
+def review(oid=None):
     if request.method=='GET':
         return render_template('reviews.html')
     else:
