@@ -98,23 +98,23 @@ def search():
         return render_template('search.html',places=places, results=results, name=db.getUser(session['user']))
 
 @app.route('/reviews',methods=['GET','POST'])
-@app.route('/reviews/<oid>') ## I'm just putting this here for now        
-def review(oid=None):
+@app.route('/reviews/<oid>',methods=['GET','POST']) ## I'm just putting this here for now        
+def review(oid=1):
     if request.method=='GET':
-        return render_template('reviews.html')
+        return render_template('reviews.html', oid=oid, place=db.getPlaces()[int(oid)], name=db.getUser(session['user']), reviews=db.getReviews(oid))
     else:
         ## get the review from the HTML form
         rating = request.form['stars']
         content = request.form['myTextBox']
-        authorID = session['user'] ##assumes user is in session (this is a protected page) and the value is set the user's ID
+        authorID = db.getUser(session['user'])['oid'] ##assumes user is in session (this is a protected page) and the value is set the user's ID
         title = "no title" ## no comment title in HTML form
-        placeID = 0 ## no placeID in HTML form
+        placeID = oid ## no placeID in HTML form
         ## add comment to database
         db.addReview(title,content,int(rating),authorID,placeID)
         ## flash success
         flash('Thank you for your review!')
         ## return template
-        return render_template('reviews.html')
+        return render_template('reviews.html', oid=oid, place=db.getPlaces()[int(oid)], name=db.getUser(session['user']), reviews=db.getReviews(oid))
 
 @app.route('/about')
 def about():

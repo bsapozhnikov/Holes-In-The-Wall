@@ -15,7 +15,8 @@ def createTable(tablename, attr):
     2nd parameter - Dictionary with keys and types as values'
     """
     print tablename
-    L = [k+' '+attr[k] for k in attr.keys()]
+    L = [k[0]+' '+k[1] for k in attr]
+##    L = [k+' '+attr[k] for k in attr.keys()]
     s = ','.join(L)
     c.execute("CREATE TABLE %s(%s)" % (tablename, s))
     conn.commit()
@@ -23,12 +24,12 @@ def createTable(tablename, attr):
 
 def createTables():
     '(re)creates tables for users, places, and reviews'
-    #drop_table('users')
-    #drop_table('places')
-    #drop_table('reviews')
-    createTable('users', {'username':'text', 'pw':'text'}) ##not sure what else needs to go here
-    createTable('places', {'placename':'text', 'lat':'text', 'lng':'text', 'adderID':'integer', 'imgsrc':'text'})
-    createTable('reviews', {'title':'text', 'content':'text', 'authorID':'integer','placeID':'integer'})
+    #dropTable('users')
+    #dropTable('places')
+    #dropTable('reviews')
+    createTable('users', [('username','text'),('pw','text')]) ##not sure what else needs to go here
+    createTable('places', [('placename','text'),('lat','text'),('lng','text'),('adderID','integer'),('imgsrc','text')])
+    createTable('reviews', [('title','text'),('content','text'),('rating','integer'),('authorID','integer'),('placeID','integer')])
 
 def validateUser(user, pw):
    # for row in c.execute("SELECT oid,* FROM users"):
@@ -97,11 +98,13 @@ def addReview(title, content, rating, authorID, placeID):
 
 
 def getUser(user):
-    '''returns user as a dictionary'''
+    '''returns user as a dictionary
+    This dictionary will also contain the user's oid'''
     users = getUsers()
     for userID in users.keys():
         some = users[userID]
         if some['username'] == user:
+            some['oid']=userID
             return some
     
 def getUsers():
@@ -128,14 +131,21 @@ def getPlaces():
         places[row[0]]=content
     return places
 
-def getReviews():
+def getReviews(placeID=None):
     '''returns dictionary of reviews: 
     the key is the unique id
     the value is a dictionary containing the rest of the data'''
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
     reviews = {}
-    for row in c.execute("SELECT oid,* FROM reviews"):
+    if placeID==None:
+        s = c.execute('SELECT oid,* FROM reviews')
+    else:
+        print "Place given, returning only some: "+`int(placeID)`
+        t = (`int(placeID)`,)
+        s = c.execute('SELECT oid,* FROM reviews WHERE placeID=?',t)
+    for row in s:
+        print "row "+`row`
         content = {'title':row[1],'content':row[2],'rating':row[3],'authorID':row[4],'placeID':row[5]}
         reviews[row[0]]=content
     return reviews
