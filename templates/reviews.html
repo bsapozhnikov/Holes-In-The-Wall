@@ -6,19 +6,26 @@
   <body>
     <ul id="menu">
       <div id="name">{{name.username}}</div>
-      <li><a href="/logout">Logout</a></li>
-      <li><a href="/settings">Change Settings</a></li>
       <li><a href="/about">About</a></li>
       <li><a href="/search">Search</a></li>
       <li><a href="/reviews">Reviews</a></li>
+      <li><a href="/settings">Change Settings</a></li>
+      <li><a href="/logout">Logout</a></li>
     </ul>
     <p class="box">
       Hello and welcome to Hole In The Wall!<br><br>
 	{{place.placename}}
 	<br>
 	{% for i in reviews %}
+    <!--this should be how to get the username from the authorID but
+  idk how it works lol sorry
+    db.getUsers()[reviews[i].authorID]
+    -->
 	<div class="review">
-	    {{reviews[i]}}
+	  <!--here's how to make the comments look normal and not like
+  a dictionary :P -->
+	  The person with authorID {{reviews[i].authorID}} said {{reviews[i].content}} and
+  gave it {{reviews[i].rating}} stars
 	</div>
 	{% endfor %}
 	<br>
