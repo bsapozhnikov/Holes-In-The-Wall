@@ -101,7 +101,7 @@ def search():
 @app.route('/reviews/<oid>',methods=['GET','POST']) ## I'm just putting this here for now        
 def review(oid=1):
     if request.method=='GET':
-        return render_template('reviews.html', oid=oid, place=db.getPlaces()[int(oid)], name=db.getUser(session['user']), reviews=db.getReviews(oid))
+        return render_template('reviews.html', oid=oid, place=db.getPlaces()[int(oid)], name=db.getUser(session['user']), reviews=db.getReviews(oid), users=db.getUsers())
     else:
         ## get the review from the HTML form
         rating = request.form['stars']
@@ -114,7 +114,7 @@ def review(oid=1):
         ## flash success
         flash('Thank you for your review!')
         ## return template
-        return render_template('reviews.html', oid=oid, place=db.getPlaces()[int(oid)], name=db.getUser(session['user']), reviews=db.getReviews(oid))
+        return render_template('reviews.html', oid=oid, place=db.getPlaces()[int(oid)], name=db.getUser(session['user']), reviews=db.getReviews(oid), users=db.getUsers())
 
 @app.route('/about')
 def about():
