@@ -25,7 +25,7 @@ def login():
                 s = session['return_to']
                 session.pop('return_to',None)
                 return redirect(s)
-            else: return redirect('/home')
+            else: return redirect('/about')
         else:
             flash('Please enter a valid username and password')
             return render_template('login.html')

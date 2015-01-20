@@ -85,7 +85,7 @@ def updatePass(username, oldpw, newpw):
 def addPlace(placename, lat, lng, adderID, imgsrc):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    c.execute("INSERT INTO places VALUES ('%s','%s','%s','%s','%s')" %(placename, lat, lng, adderID, imgsrc))
+    c.execute("INSERT INTO places VALUES ('%s','%s','%s','%s', '%s')" %(placename, lat, lng, adderID, imgsrc))
     conn.commit()
     print "added %s to places" % (placename)
 
