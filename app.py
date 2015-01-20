@@ -130,6 +130,15 @@ def home():
         return redirect('/login')
     else:
         return render_template('home.html',name=db.getUser(session['user']))
+
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    if 'user' not in session:
+        session['return_to']='/settings'
+        return redirect('/login')
+    else:
+        places=request.form['places']
+    db.addPlace(places)
         
 @app.route('/settings',methods=['GET','POST'])
 def settings():
