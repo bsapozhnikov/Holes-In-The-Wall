@@ -64,17 +64,17 @@
       <div id="map_canvas"></div>
       <form method="POST">
 	Add a place that you know of! All you need is its name, coordinates, your oid, and the src for an image of the place :) <br>
-        <div id="map_canvas" style="1500px; 1000px"></div>--
-	<iframe
-    width="600"
-    height="450"
-    frameborder="0" style="border:0"
-    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo
-      &q={{name}}
-      &attribution_source=Google+Maps+Embed+API
-      &attribution_web_url=our url">
-//need to escape characters for the name though
-  </iframe>
+        <div id="map_canvas" style="1500px; 1000px"></div>
+	<!--<iframe
+	   width="600"
+	   height="450"
+	   frameborder="0" style="border:0"
+	   src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo
+	   &q={{name}}
+	   &attribution_source=Google+Maps+Embed+API
+	   &attribution_web_url=our url">
+	  //need to escape characters for the name though
+	</iframe>-->
 	<input type="text" name="placename" placeholder="placename">
 	<br><br>
 	<!-- replace lat/lng with google maps api, and likewise for other stuff the user MIGHT not know -->
