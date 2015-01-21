@@ -1,0 +1,90 @@
+<html>
+  <style type="text/css">
+    #map_canvas {
+    height: 380px;
+    width: 550px;
+    position: static;
+    top: 100px;
+    left: 200px;
+    }
+  </style>
+  <head>
+    <title>Hole In The Wall</title>
+    <link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
+    <link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
+    <script src="http://maps.google.com/maps/api/js?v=3.5&amp;sensor=false"></script>
+    <script type="text/javascript"> 
+      var marker;
+
+      function initialize() {
+      var latLng = new google.maps.LatLng(42.55308, 9.140625);
+    
+      var myOptions = {
+        zoom: 2,
+        center: latLng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        streetViewControl: false,
+        mapTypeControl: false
+      };
+    
+      var map = new google.maps.Map(document.getElementById("map_canvas"),
+				  myOptions);
+    
+      google.maps.event.addListener(map, 'click', function(event) {
+      placeMarker(event.latLng);
+      });
+      };
+
+      function placeMarker(location) {
+      if (marker == undefined){
+      marker = new google.maps.Marker({
+      position: location,
+      map: map
+      animation: google.maps.Animation.DROP,
+      });
+      }
+      else{
+      marker.setPosition(location);
+      }
+      map.setCenter(location);
+      }
+    </script>
+  </head>
+  <body onload="initialize()">
+    <ul id="menu">
+      <div id="name">{{username}}</div>
+      <li><a href="/logout">Logout</a></li>
+      <li><a href="/settings">Change Settings</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/search">Search</a></li>
+      <li><a href="/reviews">Reviews</a></li>
+    </ul>
+    <p class="box">
+      Hello and welcome to Hole In The Wall!
+      <div id="map_canvas"></div>
+      <form method="POST">
+	Add a place that you know of! All you need is its name, coordinates, your oid, and the src for an image of the place :) <br>
+        <div id="map_canvas" style="1500px; 1000px"></div>--
+	<iframe
+    width="600"
+    height="450"
+    frameborder="0" style="border:0"
+    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo
+      &q={{name}}
+      &attribution_source=Google+Maps+Embed+API
+      &attribution_web_url=our url">
+//need to escape characters for the name though
+  </iframe>
+	<input type="text" name="placename" placeholder="placename">
+	<br><br>
+	<!-- replace lat/lng with google maps api, and likewise for other stuff the user MIGHT not know -->
+	<input type="text" name="lat" placeholder="lat">
+	<input type="text" name="lng" placeholder="lng">
+	<input type="text" name="adderID" placeholder="adderID">
+	<input type="text" name="imgsrc" placeholder="imgsrc">
+	<input type="submit" value="Add">
+      </form>	
+    </p>
+    {% include 'messages.html' %}
+  </body>
+</html>
