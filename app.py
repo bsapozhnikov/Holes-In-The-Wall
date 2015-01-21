@@ -6,14 +6,14 @@ app.secret_key ='insert_clever_secret_here'
 
 @app.route('/')
 def root():
-    return redirect('home')
+    return redirect('about')
 
 @app.route('/login',methods=['GET','POST'])
 def login():
     if "user" in session:
         
         flash("Please logout first to log into another account!")
-        return render_template('home.html',name=db.getName(session['user']))
+        return render_template('about.html',name=db.getName(session['user']))
     if request.method=='GET':
         return render_template('login.html')
     else:
@@ -78,7 +78,8 @@ def findPlaces(places,query):
         for oid in places.keys():
             pWords = set(places[oid]['placename'].split(' '))
             matches[oid] = len(qWords & pWords)
-        return [x[0] for x in sorted(matches.items(), key=lambda y: y[1], reverse=True)]
+        ans = [x[0] for x in sorted(matches.items(), key=lambda y: y[1], reverse=True)]
+        return ans[:10]
         ##return ['I don\'t ','know what ','should go here - ','what\'s our search algorithm?']## ???
 
 @app.route('/search',methods=['GET','POST'])

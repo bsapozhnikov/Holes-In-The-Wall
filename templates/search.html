@@ -8,7 +8,6 @@
       <div id="name">{{name.username}}</div>
       <li><a href="/about">About</a></li>
       <li><a href="/search">Search</a></li>
-      <li><a href="/reviews">Reviews</a></li>
       <li><a href="/settings">Change Settings</a></li>
       <li><a href="/logout">Logout</a></li>
     </ul>
@@ -24,8 +23,8 @@
     <p class="box">
 	Results:
 	<ul>
-	{% for result in results %}
-	    <li><a href="/reviews/{{result}}">{{places[result]}}</a></li>
+	{% for i in results %}
+	    <a href="/reviews/{{i}}">{{places[i].placename}}</a> <br>
 	{% endfor %}
 	</ul>
     </p>
