@@ -123,6 +123,13 @@ def about():
     else:
         return render_template('about.html',user=session['user'],name=db.getUser(session['user']))
 
+@app.route('/add')
+def add():
+    if 'user' not in session:
+        return render_template('login.html')
+    else:
+        return render_template('add.html',user=session['user'],name=db.getUser(session['user']))
+
 @app.route('/home')
 def home():
     if 'user' not in session:
