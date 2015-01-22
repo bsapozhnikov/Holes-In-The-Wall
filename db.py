@@ -66,7 +66,7 @@ still needs an existingPlace method to check if a the place is already in the db
 def addPlace(place):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    c.execute("INSERT INTO places VALUES ('%s')" %(place)
+    c.execute("INSERT INTO places VALUES (?)",(place,))
     conn.commit()
     print "added %s to places" %(places)
 
