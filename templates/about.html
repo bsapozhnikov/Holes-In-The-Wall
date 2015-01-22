@@ -8,7 +8,7 @@
       <!--changed this next section in almost all the files! This just
   keeps the tabs uniform-->
       {% if user %}
-      <div id="name">{{name.username}}</div>
+      <div id="name">{{name.username|safe}}</div>
       <li><a href="/about">About</a></li>
       <li><a href="/search">Search</a></li>
       <li><a href="/settings">Change Settings</a></li>
@@ -27,7 +27,7 @@
     <br>
     <br>
       {% if user %}
-      Welcome {{name.username}}!
+      Welcome {{name.username|safe}}!
       {% else %}
       To use the rest of our site, please <a href="/login">login</a>
       {% endif %}

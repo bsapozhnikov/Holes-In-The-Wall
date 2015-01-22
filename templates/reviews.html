@@ -5,7 +5,7 @@
   </head>
   <body>
     <ul id="menu">
-      <div id="name">{{name.username}}</div>
+      <div id="name">{{name.username|safe}}</div>
       <li><a href="/about">About</a></li>
       <li><a href="/search">Search</a></li>
       <li><a href="/settings">Change Settings</a></li>
@@ -19,7 +19,7 @@
 	<div class="review">
 	  <!--here's how to make the comments look normal and not like
   a dictionary :P -->
-	  {{users[reviews[i].authorID].username}} said {{reviews[i].content}} and
+	  {{users[reviews[i].authorID].username|safe}} said {{reviews[i].content|safe}} and
   gave it {{reviews[i].rating}} stars
 	</div>
 	{% endfor %}
