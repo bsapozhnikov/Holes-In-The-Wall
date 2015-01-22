@@ -5,7 +5,7 @@
   </head>
   <body>
     <ul id="menu">
-      <div id="name">{{name.username}}</div>
+      <div id="name">{{name.username|safe}}</div>
       <li><a href="/about">About</a></li>
       <li><a href="/search">Search</a></li>
       <li><a href="/settings">Change Settings</a></li>
@@ -24,7 +24,7 @@
 	Results:
 	<ul>
 	{% for i in results %}
-	    <a href="/reviews/{{i}}">{{places[i].placename}}</a> <br>
+	    <a href="/reviews/{{i}}">{{places[i].placename|safe}}</a> <br>
 	{% endfor %}
 	</ul>
     </p>

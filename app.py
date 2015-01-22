@@ -1,8 +1,15 @@
 from flask import Flask,request,redirect,render_template,session,flash
-import db
+import db, cgi
 
 app=Flask(__name__)
 app.secret_key ='insert_clever_secret_here'
+
+def unescape(s):
+    s = s.replace("&lt;", "<")
+    s = s.replace("&gt;", ">")
+    # this has to be last:
+    s = s.replace("&amp;", "&")
+    return s
 
 @app.route('/')
 def root():
@@ -17,8 +24,8 @@ def login():
     if request.method=='GET':
         return render_template('login.html')
     else:
-        user=request.form['user']
-        pw=request.form['pass']
+        user=cgi.escape(request.form['user'],quote=True)
+        pw=cgi.escape(request.form['pass'],quote=True)
         if db.validateUser(user,pw):
             session['user']=user
             if 'return_to' in session:
@@ -122,6 +129,7 @@ def about():
     if 'user' not in session:
         return render_template('about.html')
     else:
+        print session['user']
         return render_template('about.html',user=session['user'],name=db.getUser(session['user']))
 
 @app.route('/home')

@@ -1,4 +1,5 @@
 import sqlite3
+import cgi
 
 conn = sqlite3.connect("data.db")
 
@@ -32,7 +33,7 @@ def createTables():
     createTable('reviews', [('title','text'),('content','text'),('rating','integer'),('authorID','integer'),('placeID','integer')])
 
 def validateUser(user, pw):
-   # for row in c.execute("SELECT oid,* FROM users"):
+    # for row in c.execute("SELECT oid,* FROM users"):
     #    content = {'username':row[1],'pw':row[2]}
      #   users[row[0]]=content
    # for x in users:
@@ -54,13 +55,14 @@ def addUser(username, pw):
     if not existingName(username):## removed for testing purposes ## and validateUser(username,pw): 
         conn = sqlite3.connect('data.db')
         c = conn.cursor()
-        c.execute("INSERT INTO users VALUES ('%s','%s')" %(username,pw))
+        c.execute("INSERT INTO users VALUES (?,?)",(cgi.escape(username,quote=True),cgi.escape(pw,quote=True)))
         conn.commit()
         print "added %s to users" % (username)
     else:
         print "Username already taken. Please enter a different username"
 
 def existingName(username):
+    username = cgi.escape(username,quote=True)
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
     users = {}
@@ -76,6 +78,9 @@ def existingName(username):
     return False ## I think this IS right
 
 def updatePass(username, oldpw, newpw):
+    username = cgi.escape(username,quote=True)
+    oldpw = cgi.escape(oldpw,quote=True)
+    newpw = cgi.escape(newpw,quote=True)
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
     c.execute("UPDATE users SET pw = ? WHERE username = ? and pw = ?", (newpw,username,oldpw)) 
@@ -85,14 +90,14 @@ def updatePass(username, oldpw, newpw):
 def addPlace(placename, lat, lng, adderID, imgsrc):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    c.execute("INSERT INTO places VALUES ('%s','%s','%s','%s', '%s')" %(placename, lat, lng, adderID, imgsrc))
+    c.execute("INSERT INTO places VALUES (?,?,?,?,?)" ,(cgi.escape(placename), lat, lng, adderID, cgi.escape(imgsrc)))
     conn.commit()
     print "added %s to places" % (placename)
 
 def addReview(title, content, rating, authorID, placeID):
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    c.execute("INSERT INTO reviews VALUES ('%s','%s','%s', '%s','%s')" %(title, content, rating, authorID, placeID))
+    c.execute("INSERT INTO reviews VALUES (?,?,?,?,?)" ,(title, content, rating, authorID, placeID))
     conn.commit()
     print "added %s to reviews" % (title)
 
