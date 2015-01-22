@@ -61,6 +61,15 @@ def addUser(username, pw):
     else:
         print "Username already taken. Please enter a different username"
 
+'''add place into db
+still needs an existingPlace method to check if a the place is already in the db'''
+def addPlace(place):
+    conn = sqlite3.connect('data.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO places VALUES ('%s')" %(place)
+    conn.commit()
+    print "added %s to places" %(places)
+
 def existingName(username):
     username = cgi.escape(username,quote=True)
     conn = sqlite3.connect('data.db')
