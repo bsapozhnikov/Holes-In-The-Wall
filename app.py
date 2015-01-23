@@ -136,13 +136,6 @@ def about():
         print session['user']
         return render_template('about.html',user=session['user'],name=db.getUser(session['user']))
 
-@app.route('/add')
-def add():
-    if 'user' not in session:
-        return render_template('login.html')
-    else:
-        return render_template('add.html',user=session['user'],name=db.getUser(session['user']))
-
 @app.route('/home')
 def home():
     if 'user' not in session:
@@ -158,8 +151,8 @@ ip = urllib2.urlopen('http://ip.42.pl/raw').read()
 
 #get geo data
 URL = "http://www.freegeoip.net/json/" + ip
-request= urllib2.urlopen(URL)
-result = request.read()
+req= urllib2.urlopen(URL)
+result = req.read()
 data = json.loads(result)
 resultList = data.values()
 dump = ast.literal_eval(json.dumps(data))
