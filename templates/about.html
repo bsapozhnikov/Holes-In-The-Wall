@@ -1,12 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
   <head>
-    <title>About</title>
-    <link rel="stylesheet" href="/static/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/slate/bootstrap.min.css">
+    <link rel="stylesheet" href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css">
+    <title>GODEGA</title>
   </head>
-  <body>
+<body>
+<div class="container">
+<div id="content">
+  <div class="jumbotron">
     <ul id="menu">
-      <!--changed this next section in almost all the files! This just
-  keeps the tabs uniform-->
       {% if user %}
       <div id="name">{{name.username|safe}}</div>
       <li><a href="/about">About</a></li>
@@ -14,7 +17,7 @@
       <li><a href="/settings">Change Settings</a></li>
       <li><a href="/logout">Logout</a></li>
       {% else %}
-      <li><a href="/login">Login</a></li>
+      <a href="/login">Login</a></li>
       {% endif %}
     </ul>
     <p class="box">
@@ -32,5 +35,7 @@
       To use the rest of our site, please <a href="/login">login</a>
       {% endif %}
     </p>
+    </div>
+    </div>
   </body>
 </html>

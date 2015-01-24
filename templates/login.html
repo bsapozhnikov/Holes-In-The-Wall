@@ -1,9 +1,13 @@
 <html>
   <head>
-    <title>iBM Login</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/slate/bootstrap.min.css">
+    <link rel="stylesheet" href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css">
+    <title>Login</title>
     <link rel="stylesheet" href="/static/style.css" type="text/css" media="screen" />
   </head>
   <body>
+<div class="container">
+  <div class="jumbotron">
     <ul id="menu">
       <li><a href="/about">About</a></li>
     </ul>
@@ -15,5 +19,7 @@
     </form>
     <br>or...<br><a class="button" href="/register"><span>Register</span></a>
     {% include 'messages.html' %}
+    </div>
+    </div>
   </body>
 </html>
