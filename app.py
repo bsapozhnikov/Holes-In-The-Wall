@@ -1,5 +1,9 @@
 from flask import Flask,request,redirect,render_template,session,flash
-import db, cgi
+import db
+import json
+import urllib2
+import ast
+import cgi
 
 app=Flask(__name__)
 app.secret_key ='insert_clever_secret_here'
@@ -139,6 +143,37 @@ def home():
         return redirect('/login')
     else:
         return render_template('home.html',name=db.getUser(session['user']))
+
+
+#I want to use the location to center the add map- Maria
+#get ip address
+ip = urllib2.urlopen('http://ip.42.pl/raw').read()
+
+#get geo data
+URL = "http://www.freegeoip.net/json/" + ip
+req= urllib2.urlopen(URL)
+result = req.read()
+data = json.loads(result)
+resultList = data.values()
+dump = ast.literal_eval(json.dumps(data))
+
+city = dump.get("city")
+z = dump.get("zipcode")
+lat = dump.get("latitude")
+lon = dump.get("longitude")
+
+
+@app.route('/add', methods=['GET', 'POST'])
+def add():
+    if 'user' not in session:
+        session['return_to']='/settings'
+        return redirect('/login')
+    else:   
+        #Why is the places stuff here?
+        places=request.form['places']
+        db.addPlace(places)
+        #Trying to make it also take your location for centering the map
+        return render_template('add.html', lat = lat, lon = lon)
         
 @app.route('/settings',methods=['GET','POST'])
 def settings():
@@ -155,7 +190,6 @@ def settings():
             name=request.form['name']
             pw = request.form['oldpw']
             newpw = request.form['newpw']
-            color = request.form['color']
             if pw == "" or not db.updateUserInfo(user,pw,newpw,name,color):
                 flash("Please enter your correct current password to make any changes!")
                 return redirect("/settings")
