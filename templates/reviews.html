@@ -1,11 +1,39 @@
+<!DOCTYPE html>
 <html>
   <head>
+    <style type="text/css">
+      #map-canvas {
+      width: 50%;
+      position: static; <!--What does this do?-->
+      }
+    </style>
     <title>Hole In The Wall</title>
     <link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
+    <!--MAP STUFF-->
+    <script type="text/javascript"
+	    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo">
+    </script>
+    <script type="text/javascript">
+      <!--var marker;-->
+
+      <!-- This function initializes the map-->
+      function initialize() {
+      var mapOptions = { 
+      center: { lat: 42.55308, lng: 9.140625},
+      zoom: 16
+      };
+      var map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+      var pos = new google.maps.LatLng(0,0);  <!--What does this line do lol--> 
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
   </head>
   <body>
     <ul id="menu">
-      <div id="name">{{username}}</div>
+      <div id="username">{{username}}</div>
       <li><a href="logout">Logout</a></li>
       <li><a href="settings">Change Settings</a></li>
       <li><a href="about">About</a></li>
@@ -14,6 +42,7 @@
     </ul>
     <p class="box">
       Hello and welcome to Hole In The Wall!
+      <div id="map-canvas" style="width: 100%; height: 100%"></div>
       <form method="POST">
 	Please add a review:
 	<br>
@@ -37,15 +66,6 @@
       </form>	
     </p>
     {% include 'messages.html' %}
- <iframe
-    width="600"
-    height="450"
-    frameborder="0" style="border:0"
-    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo
-      &q={{username}}
-      &attribution_source=Google+Maps+Embed+API
-      &attribution_web_url=our url">
-//need to escape characters for the name though
-  </iframe>
+
   </body>
 </html>

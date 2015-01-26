@@ -1,36 +1,58 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <style type="text/css">
-    #map-canvas {
-    width: 50%;
-    position: static; <!--What does this do?-->
-   }
-   <!-- html, body, #map-canvas{ height:50%; margin: 0; padding: 0;}-->
-  </style>
-  <title>Hole In The Wall</title>
-  <!--<link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" /> I'm not 100% sure what this line is point, so I don't wanna remove it yet-->
-  <!--MAP STUFF-->
-  <script type="text/javascript"
-	  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo">
-  </script>
-  <script type="text/javascript">
-    <!-- This function initializes the map-->
-    function initialize() {
-    var mapOptions = { 
-    <!--Add a center and stuff here-->
-    center: { lat: -34.397, lng: 150.644},
-    zoom: 8
-    };
-    var map = new google.maps.Map(document.getElementById('map-canvas'),
-    mapOptions);
-    
-    var pos = new google.maps.LatLng(0,0);  <!--What does this line do lol--> 
-    }
-    google.maps.event.addDomListener(window, 'load', initialize);
-  </script>
+    <style type="text/css">
+      #map-canvas {
+      width: 50%;
+      position: static; <!--What does this do?-->
+      }
+    </style>
+    <title>Hole In The Wall</title>
+    <link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
+    <!--MAP STUFF-->
+    <script type="text/javascript"
+	    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo">
+    </script>
+    <script type="text/javascript">
+      <!--var marker;-->
+
+      <!-- This function initializes the map-->
+      function initialize() {
+      var mapOptions = { 
+      center: { lat: 42.55308, lng: 9.140625},
+      zoom: 16
+      };
+      var map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+      var pos = new google.maps.LatLng(0,0);  <!--What does this line do lol--> 
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+    <script type="text/javascript">
+      <!--Place a marker on a click-->
+      google.maps.event.addListener(map, 'click', function(event) {
+      placeMarker(event.latLng);
+      });
+      };
+
+      function placeMarker(location) {
+      if (marker == undefined) {
+      marker = new google.maps.Marker({
+      position: location,
+      map: map
+      animation: google.maps.Animation.DROP,
+      });
+      }
+      else{
+      marker.setPosition(location);
+      }
+      map.setCenter(location);
+      }
+    </script>
   </head>
-  <body onload="initialize()"> <!--What does the onload thing do and why do you need both this and the addDomListener event-->
+  <body> <!--What does the onload thing do and why do you need both this and the addDomListener event-->
     <ul id="menu">
       <div id="username">{{username}}</div>
       <li><a href="/logout">Logout</a></li>
