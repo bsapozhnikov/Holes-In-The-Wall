@@ -4,6 +4,8 @@ import json
 import urllib2
 import ast
 import cgi
+import requests
+import math
 
 app=Flask(__name__)
 app.secret_key ='insert_clever_secret_here'
@@ -93,22 +95,51 @@ def findPlaces(places,query):
         return ans[:10]
         ##return ['I don\'t ','know what ','should go here - ','what\'s our search algorithm?']## ???
 
+def findPlacesByGeo(places,lat,lng):
+    matches = {}
+    print("User's location: (%d,%d)"%(lat,lng))
+    for oid in places.keys():
+        plat = float(places[oid]['lat'])
+        plng = float(places[oid]['lng'])
+        print("%s's location: (%d,%d)"%(places[oid]['placename'],lat,lng))
+        dist = math.sqrt(math.pow(lng-plng,2)+math.pow(lat-plat,2))
+        matches[oid] = dist
+    ans = [x[0] for x in sorted(matches.items(), key=lambda y: y[1])]
+    return ans[:10]    
+        
 @app.route('/search',methods=['GET','POST'])
 def search():
     if request.method=='GET':
         return render_template('search.html', name=db.getUser(session['user']))
     else:
-        ## get the query from the HTML form
-        query = request.form['holeInTheWall']
-        print "The query is '%s'"%query
-        ## get the places from the database
-        places = db.getPlaces()
-        ## sort the dictionary into a list
-        results = findPlaces(places,query)
-        ##results = ['I don\'t ','know what ','should go here - ','what\'s our search algorithm?']## ???
-        ## pass sorted list to template
-        return render_template('search.html',places=places, results=results, name=db.getUser(session['user']))
-
+        
+        if request.form['submit']=='Search': ##search by keywords
+            ## get the query from the HTML form
+            query = request.form['holeInTheWall']
+            print "The query is '%s'"%query
+            ## get the places from the database
+            places = db.getPlaces()
+            ## sort the dictionary into a list
+            results = findPlaces(places,query)
+            ##results = ['I don\'t ','know what ','should go here - ','what\'s our search algorithm?']## ???
+            ## pass sorted list to template
+            return render_template('search.html',places=places, results=results, name=db.getUser(session['user']))
+        else: ##search by location
+            ##get ip address
+            ip = urllib2.urlopen('http://ip.42.pl/raw').read()
+            #get geo data
+            URL = "http://www.freegeoip.net/json/" + ip
+            req = requests.get(URL)###req= urllib2.urlopen(URL)###
+            result = req.text###result = req.read()###
+            data = json.loads(result)
+            resultList = data.values()
+            dump = ast.literal_eval(json.dumps(data))
+            lat = dump.get("latitude")
+            lng = dump.get("longitude")
+            places = db.getPlaces()
+            results = findPlacesByGeo(places,lat,lng)
+            return render_template('search.html',places=places, results=results, name=db.getUser(session['user']))
+            
 @app.route('/reviews',methods=['GET','POST'])
 @app.route('/reviews/<oid>',methods=['GET','POST']) ## I'm just putting this here for now        
 def review(oid=1):
@@ -151,8 +182,8 @@ ip = urllib2.urlopen('http://ip.42.pl/raw').read()
 
 #get geo data
 URL = "http://www.freegeoip.net/json/" + ip
-req= urllib2.urlopen(URL)
-result = req.read()
+req = requests.get(URL)###req= urllib2.urlopen(URL)###
+result = req.text###result = req.read()###
 data = json.loads(result)
 resultList = data.values()
 dump = ast.literal_eval(json.dumps(data))
