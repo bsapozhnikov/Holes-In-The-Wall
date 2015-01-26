@@ -1,9 +1,13 @@
 <html>
   <head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/slate/bootstrap.min.css">
+    <link rel="stylesheet" href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css">
     <title>About</title>
     <link rel="stylesheet" href="/static/style.css" type="text/css" media="screen" />
   </head>
   <body>
+<div class="container">
+  <div class="jumbotron">
     <ul id="menu">
       <!--changed this next section in almost all the files! This just
   keeps the tabs uniform-->
@@ -11,7 +15,7 @@
       <div id="name">{{name.username|safe}}</div>
       <li><a href="/about">About</a></li>
       <li><a href="/search">Search</a></li>
-      <li><a href="/settings">Change Settings</a></li>
+      <li><a href="/settings">Settings</a></li>
       <li><a href="/logout">Logout</a></li>
       {% else %}
       <li><a href="/login">Login</a></li>
