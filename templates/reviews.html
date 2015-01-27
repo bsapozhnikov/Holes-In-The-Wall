@@ -1,9 +1,14 @@
 <html>
-  <head>
+    <head>
+<link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/slate/bootstrap.min.css">
+	<link rel="stylesheet" href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css">	
     <title>Hole In The Wall</title>
-    <link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
+    
   </head>
   <body>
+      <div class=“container”>
+	<div class=“jumbotron”>
     <ul id="menu">
       <div id="name">{{name.username|safe}}</div>
       <li><a href="/about">About</a></li>
