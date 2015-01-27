@@ -10,6 +10,8 @@
     }
   </style>
   <head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/slate/bootstrap.min.css">
+    <link rel="stylesheet" href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css">
   <style type="text/css">
     #map-canvas {
     width: 50%;
@@ -18,7 +20,21 @@
    <!-- html, body, #map-canvas{ height:50%; margin: 0; padding: 0;}-->
   </style>
   <title>Hole In The Wall</title>
-  <link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" /> 
+  <link rel="stylesheet" href="../static/style.css" type="text/css"
+media="screen" />
+<div class="container">
+<div class="jumbotron">
+    <ul id="menu">
+      {% if user %}
+      <div id="name">{{name.username|safe}}</div>
+      <li><a href="/about">About</a></li>
+      <li><a href="/search">Search</a></li>
+      <li><a href="/settings">Settings</a></li>
+      <li><a href="/logout">Logout</a></li>
+      {% else %}
+      <a href="/login">Login</a></li>
+      {% endif %}
+    </ul>
   <!--MAP STUFF-->
   <script type="text/javascript"
 	  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo">
@@ -40,14 +56,7 @@
   </script>
   </head>
   <body onload="initialize()"> <!--What does the onload thing do and why do you need both this and the addDomListener event-->
-    <ul id="menu">
-      <div id="username">{{username}}</div>
-      <li><a href="/logout">Logout</a></li>
-      <li><a href="/settings">Change Settings</a></li>
-      <li><a href="/about">About</a></li>
-      <li><a href="/search">Search</a></li>
-      <li><a href="/reviews">Reviews</a></li>
-    </ul>
+    
     <p class="box">
       Hello and welcome to Hole In The Wall!
       <!-- This div holds the map. Move it to move the map-->
