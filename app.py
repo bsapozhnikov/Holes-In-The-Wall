@@ -204,7 +204,7 @@ def add():
         places=request.form['places']
         db.addPlace(places)
         #Trying to make it also take your location for centering the map
-        return render_template('add.html', lat = lat, lon = lon)
+        return render_template('add.html', latlng = request.form["latlng"])
         
 @app.route('/settings',methods=['GET','POST'])
 def settings():

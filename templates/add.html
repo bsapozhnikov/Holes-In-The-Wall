@@ -58,7 +58,7 @@
       }
 
       marker.setMap(map); 
-
+      document.getElementById("latlng").value=myLatlng
       
       document.getElementById('map-canvas').style.height = '400px';
       document.getElementById('map-canvas').style.width = '95%';
@@ -86,6 +86,7 @@
 	<input type="text" name="lng" placeholder="lng">
 	<input type="text" name="adderID" placeholder="adderID">
 	<input type="text" name="imgsrc" placeholder="imgsrc">
+	<input type="hidden" id="latlng" name="latlng">
 	<input type="submit" value="Add">
       </form>	
     </p>
