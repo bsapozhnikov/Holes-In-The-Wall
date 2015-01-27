@@ -199,12 +199,24 @@ def add():
     if 'user' not in session:
         session['return_to']='/settings'
         return redirect('/login')
-    else:   
-        #Why is the places stuff here?
-        places=request.form['places']
-        db.addPlace(places)
-        #Trying to make it also take your location for centering the map
-        return render_template('add.html', latlng = request.form["latlng"])
+    else:
+        if request.method=='GET':
+            
+            # #Why is the places stuff here?
+            # places=request.form['places']
+            # db.addPlace(places)
+            # #Trying to make it also take your location for centering the map
+            # return render_template('add.html', latlng = request.form["latlng"])
+            return render_template('add.html',name=db.getUser(session['user']))
+        else:
+            placename = request.form['placename']
+            lat = request.form['lat']
+            lng = request.form['lng']
+            adderID = db.getUser(session['user'])['oid']
+            imgsrc = "notyet"
+            db.addPlace(placename, lat, lng, adderID, imgsrc)
+            flash("Thank You")
+            return redirect('/')
         
 @app.route('/settings',methods=['GET','POST'])
 def settings():
