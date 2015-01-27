@@ -18,7 +18,8 @@
       <!-- This function initializes the map-->
       function initialize() {
       var myLatlng = new google.maps.LatLng({{lat}},{{lng}});
-      <!-- substitute w real values like 40.7127, -74.0059 to test html only-->
+      <!--var myLatlng = new google.maps.LatLng(40.7127,-74.0059);
+	  (Use for testing outside of app.py)-->
       var mapOptions = { 
       center: myLatlng,
       zoom: 17
@@ -46,29 +47,31 @@
     
   </head>
   <body>
-    <ul id="menu">
-      <div id="name">{{name.username|safe}}</div>
-      <li><a href="/about">About</a></li>
-      <li><a href="/search">Search</a></li>
-      <li><a href="/settings">Change Settings</a></li>
-      <li><a href="/logout">Logout</a></li>
-    </ul>
-    <p class="box">
-      Hello and welcome to Hole In The Wall!<br><br>
-	{{place.placename|safe}}
-      <div id="map-canvas" style="width: 100%; height: 100%"></div>
-      <br>
-      {% for i in reviews %}
-      <div class="review">
-	<!--here's how to make the comments look normal and not like
-	    a dictionary :P -->
-	{{users[reviews[i].authorID].username|safe}} said {{reviews[i].content|safe}} and
-  gave it {{reviews[i].rating}} stars
-      </div>
-      {% endfor %}
-      <br>
-	<form method="POST">
-	  Please add a review:
+    <div class="container">
+      <div class="jumbotron">
+	<ul id="menu">
+	  <div id="name">{{name.username|safe}}</div>
+	  <li><a href="/about">About</a></li>
+	  <li><a href="/search">Search</a></li>
+	  <li><a href="/settings">Change Settings</a></li>
+	  <li><a href="/logout">Logout</a></li>
+	</ul>
+	<p class="box">
+	  Hello and welcome to Hole In The Wall!<br><br>
+	  {{place.placename|safe}}
+	  <div id="map-canvas" style="width: 100%; height: 100%"></div>
+	  <br>
+	  {% for i in reviews %}
+	  <div class="review">
+	    <!--here's how to make the comments look normal and not like
+		a dictionary :P -->
+	    {{users[reviews[i].authorID].username|safe}} said {{reviews[i].content|safe}} and
+	    gave it {{reviews[i].rating}} stars
+	  </div>
+	  {% endfor %}
+	  <br>
+	  <form method="POST">
+	    Please add a review:
 	    <br>
 	    How many stars would you give this establishment?
 	    <br>
@@ -87,8 +90,10 @@
 	    <textarea name="myTextBox" cols="50" rows="5" placeholder="Enter your comments..."></textarea>
 	    <br><br>
 	    <input type="submit" value="Submit">
-	</form>
-    </p>
-    {% include 'messages.html' %}
+	  </form>
+	</p>
+	{% include 'messages.html' %}
+      </div>
+    </div>
   </body>
 </html>
