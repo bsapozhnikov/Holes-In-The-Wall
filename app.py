@@ -1,11 +1,6 @@
 from flask import Flask,request,redirect,render_template,session,flash
-import db
-import json
-import urllib2
-import ast
-import cgi
-import requests
-import math
+import json, urllib2, ast, cgi
+import requests, math, db
 
 app=Flask(__name__)
 app.secret_key ='insert_clever_secret_here'
@@ -24,12 +19,12 @@ def root():
 @app.route('/login',methods=['GET','POST'])
 def login():
     if "user" in session:
-        
         flash("Please logout first to log into another account!")
         return render_template('about.html',name=db.getName(session['user']))
     if request.method=='GET':
         return render_template('login.html')
     else:
+        ## get and validate user's info
         user=cgi.escape(request.form['user'],quote=True)
         pw=cgi.escape(request.form['pass'],quote=True)
         if db.validateUser(user,pw):
@@ -46,25 +41,21 @@ def login():
 @app.route('/register',methods=['GET','POST'])
 def register():
     if "user" in session:
-        
         flash("Please logout first to register another account!")
         return render_template('home.html',name=db.getName(session['user']))
     if request.method=='GET':
         return render_template('register.html')
     else:
-        
         name=request.form['name']
         user=request.form['user']
         pw=request.form['pass']
-        color=request.form['color']
-        if name == "" or user == "" or pw =="" or color == "":
+        if name == "" or user == "" or pw =="":
             flash('Please fill in all the fields')
             return redirect('/register')
         elif db.existingName(user):
             flash('Your username is already taken!')
             return redirect('/register')
         else:
-            
             if db.addUser(user,pw):
                 return redirect('/login')
             else:
@@ -93,7 +84,6 @@ def findPlaces(places,query):
             matches[oid] = len(qWords & pWords)
         ans = [x[0] for x in sorted(matches.items(), key=lambda y: y[1], reverse=True)]
         return ans[:10]
-        ##return ['I don\'t ','know what ','should go here - ','what\'s our search algorithm?']## ???
 
 def findPlacesByGeo(places,lat,lng):
     matches = {}
@@ -112,7 +102,6 @@ def search():
     if request.method=='GET':
         return render_template('search.html', name=db.getUser(session['user']))
     else:
-        
         if request.form['submit']=='Search': ##search by keywords
             ## get the query from the HTML form
             query = request.form['holeInTheWall']
@@ -141,23 +130,27 @@ def search():
             return render_template('search.html',places=places, results=results, name=db.getUser(session['user']))
             
 @app.route('/reviews',methods=['GET','POST'])
-@app.route('/reviews/<oid>',methods=['GET','POST']) ## I'm just putting this here for now        
+@app.route('/reviews/<oid>',methods=['GET','POST'])
 def review(oid=1):
     if request.method=='GET':
-        return render_template('reviews.html', oid=oid, place=db.getPlaces()[int(oid)], name=db.getUser(session['user']), reviews=db.getReviews(oid), users=db.getUsers(), plat = float(places[oid]['lat']), plng = float(places[oid]['lng']))
+        places = db.getPlaces()
+        oid = int(oid)
+        return render_template('reviews.html', oid=oid, place=db.getPlaces()[oid], name=db.getUser(session['user']), reviews=db.getReviews(oid), users=db.getUsers(), plat = float(places[oid]['lat']), plng = float(places[oid]['lng']))
     else:
         ## get the review from the HTML form
         rating = request.form['stars']
         content = request.form['myTextBox']
-        authorID = db.getUser(session['user'])['oid'] ##assumes user is in session (this is a protected page) and the value is set the user's ID
+        authorID = db.getUser(session['user'])['oid'] 
         title = "no title" ## no comment title in HTML form
-        placeID = oid ## no placeID in HTML form
+        placeID = oid
         ## add comment to database
         db.addReview(title,content,int(rating),authorID,placeID)
         ## flash success
         flash('Thank you for your review!')
         ## return template
-        return render_template('reviews.html', oid=oid, place=db.getPlaces()[int(oid)], name=db.getUser(session['user']), reviews=db.getReviews(oid), users=db.getUsers(), plat = float(places[oid]['lat']), plng = float(places[oid]['lng']))
+        places = db.getPlaces()
+        oid = int(oid)
+        return render_template('reviews.html', oid=oid, place=places[oid], name=db.getUser(session['user']), reviews=db.getReviews(oid), users=db.getUsers(), plat = float(places[oid]['lat']), plng = float(places[oid]['lng']))
 
 @app.route('/about')
 def about():
@@ -175,15 +168,13 @@ def home():
     else:
         return render_template('home.html',name=db.getUser(session['user']))
 
-
-#I want to use the location to center the add map- Maria
 #get ip address
 ip = urllib2.urlopen('http://ip.42.pl/raw').read()
 
 #get geo data
 URL = "http://www.freegeoip.net/json/" + ip
-req = requests.get(URL)###req= urllib2.urlopen(URL)###
-result = req.text###result = req.read()###
+req = requests.get(URL)
+result = req.text
 data = json.loads(result)
 resultList = data.values()
 dump = ast.literal_eval(json.dumps(data))
@@ -201,19 +192,13 @@ def add():
         return redirect('/login')
     else:
         if request.method=='GET':
-            
-            # #Why is the places stuff here?
-            # places=request.form['places']
-            # db.addPlace(places)
-            # #Trying to make it also take your location for centering the map
-            # return render_template('add.html', latlng = request.form["latlng"])
-            return render_template('add.html',name=db.getUser(session['user']))
+            return render_template('add.html',user=True,name=db.getUser(session['user']))
         else:
             placename = request.form['placename']
             lat = request.form['lat']
             lng = request.form['lng']
             adderID = db.getUser(session['user'])['oid']
-            imgsrc = "notyet"
+            imgsrc = "notyet" ## possible enhancement for the future
             db.addPlace(placename, lat, lng, adderID, imgsrc)
             flash("Thank You")
             return redirect('/')
@@ -227,19 +212,16 @@ def settings():
         if request.method=='GET':
             return render_template('settings.html',name=db.getUser(session['user']))
         else:
-            
             ##get new info and update
             user = session['user']
-            name=request.form['name']
             pw = request.form['oldpw']
             newpw = request.form['newpw']
-            if pw == "" or not db.updateUserInfo(user,pw,newpw,name,color):
+            if pw == "" or not db.updatePass(user,pw,newpw):
                 flash("Please enter your correct current password to make any changes!")
                 return redirect("/settings")
             else:
-                return redirect('/home')
+                return redirect('/about')
 
 if __name__ == '__main__':
-    
     app.debug=True
-    app.run()
+    app.run(host="0.0.0.0",port=5000)

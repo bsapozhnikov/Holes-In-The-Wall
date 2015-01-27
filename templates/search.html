@@ -1,39 +1,40 @@
 <html>
-  <head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/slate/bootstrap.min.css">
-    <link rel="stylesheet" href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css">
-    <title>Hole In The Wall</title>
-    <link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
-  </head>
-  <body>
-<div class="container">
-  <div class="jumbotron">
-    <ul id="menu">
-      <div id="name">{{name.username|safe}}</div>
-      <li><a href="/about">About</a></li>
-      <li><a href="/search">Search</a></li>
-      <li><a href="/settings">Settings</a></li>
-      <li><a href="/logout">Logout</a></li>
-   </ul>
-    <p class="box">
-      Hello and welcome to Hole In The Wall!
-      <form method="POST">
-	Search to find a Hole In The Wall already on our app:<br>
-	<input type="text" name="holeInTheWall">
-	<br><br>
-	<input type="submit" name="submit" value="Search">
-	<br>OR<br>
-	<input type="submit" name="submit" value="Search By Location">
-      </form>	
-    </p>
-    <p class="box">
-	Results:
-	<ul>
-	{% for i in results %}
-	    <a href="/reviews/{{i}}">{{places[i].placename|safe}}</a> <br>
-	{% endfor %}
-	</ul>
-    </p>
-    {% include 'messages.html' %}
-  </body>
+    <head>
+	<link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/slate/bootstrap.min.css">
+	<link rel="stylesheet" href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css">
+	<title>Hole In The Wall</title>
+    </head>
+    <body>
+	<div class="container">
+	    <div class="jumbotron">
+		<ul id="menu">
+		    <div id="name">{{name.username|safe}}</div>
+		    <li><a href="/about">About</a></li>
+		    <li><a href="/search">Search</a></li>
+		    <li><a href="/add">Add</a></li>
+		    <li><a href="/settings">Settings</a></li>
+		    <li><a href="/logout">Logout</a></li>
+		</ul>
+		<p class="box">
+		    Hello and welcome to Hole In The Wall!
+		    <form method="POST">
+			Search to find a Hole In The Wall already on our app:<br>
+			<input type="text" name="holeInTheWall">
+			<br><br>
+			<input type="submit" name="submit" class="button" value="Search">
+			<br>OR<br>
+			<input type="submit" name="submit" class="button" value="Locate">
+		    </form>	
+		</p>
+		<p class="box">
+		    Results
+		    <ul>
+			{% for i in results %}
+			<a href="/reviews/{{i}}">{{places[i].placename|safe}}</a> <br>
+			{% endfor %}
+		    </ul>
+		</p>
+		{% include 'messages.html' %}
+    </body>
 </html>

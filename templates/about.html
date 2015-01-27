@@ -1,50 +1,45 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
-  <head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/slate/bootstrap.min.css">
-    <link rel="stylesheet" href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css">
-    <title>GODEGA</title>
-  </head>
-<body>
-<div class="container">
-<div id="content">
-    <!-- I'm not sure, but I think is the correct version above, and older version below
-       <title>About</title>
-       <link rel="stylesheet" href="/static/style.css" type="text/css" media="screen" />
-       </head>
-       <body>
-       <div class="container">
-       >>>>>>> origin/styling-part-2 
-       -->
-  <div class="jumbotron">
-    <ul id="menu">
-      {% if user %}
-      <div id="name">{{name.username|safe}}</div>
-      <li><a href="/about">About</a></li>
-      <li><a href="/search">Search</a></li>
-      <li><a href="/settings">Settings</a></li>
-      <li><a href="/logout">Logout</a></li>
-      {% else %}
-      <a href="/login">Login</a></li>
-      {% endif %}
-    </ul>
-    <p class="box">
-      GO-DEGA
-    <br>
-    Need to find a Bodega fast? Use our simple search page to find a
-    <br>
-  Bodega, as well as see reviews and comments from other hungry New
-  Yorkers!
-    <br>
-    <br>
-      {% if user %}
-      Welcome {{name.username|safe}}!
-      {% else %}
-      To use the rest of our site, please <a href="/login">login</a>
-      {% endif %}
-    </p>
-    </div>
-</div>
-{% include 'messages.html' %}
-  </body>
+    <head>
+	<link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/slate/bootstrap.min.css">
+	<link rel="stylesheet" href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css">
+	<title>GODEGA</title>
+    </head>
+    <body>
+	<div class="container">
+	    <div id="content">
+		<div class="jumbotron">
+		    <ul id="menu">
+			{% if user %}
+			<div id="name">{{name.username|safe}}</div>
+			<li><a href="/about">About</a></li>
+			<li><a href="/search">Search</a></li>
+			<li><a href="/add">Add</a></li>
+			<li><a href="/settings">Settings</a></li>
+			<li><a href="/logout">Logout</a></li>
+			{% else %}
+			<a href="/login">Login</a></li>
+  	                {% endif %}
+		    </ul>
+		    <p class="box">
+			GO-DEGA
+			<br>
+			Need to find a Bodega fast? Use our simple search page to find a
+			<br>
+			Bodega, as well as see reviews and comments from other hungry New
+			Yorkers!
+			<br>
+			<br>
+			{% if user %}
+			Welcome {{name.username|safe}}!
+			{% else %}
+			To use the rest of our site, please <a href="/login">login</a> or <a href="/register">register</a>
+			{% endif %}
+		    </p>
+		</div>
+	    	{% include 'messages.html' %}
+	    </div>
+	</div>
+    </body>
 </html>

@@ -33,18 +33,7 @@ def createTables():
     createTable('reviews', [('title','text'),('content','text'),('rating','integer'),('authorID','integer'),('placeID','integer')])
 
 def validateUser(user, pw):
-    # for row in c.execute("SELECT oid,* FROM users"):
-    #    content = {'username':row[1],'pw':row[2]}
-     #   users[row[0]]=content
-   # for x in users:
-   #     if (len(username) <= 5):
-    #        return False
-     #   if (len(pw) <= 5):
-      #      return False
-   # else:
-    #    return True
     users = getUsers()
-    ##print [x for x in users.keys()]
     for userID in users.keys():
         some = users[userID]
         if some['username'] == user:
@@ -52,7 +41,7 @@ def validateUser(user, pw):
     return False
     
 def addUser(username, pw):
-    if not existingName(username):## removed for testing purposes ## and validateUser(username,pw): 
+    if not existingName(username):
         conn = sqlite3.connect('data.db')
         c = conn.cursor()
         c.execute("INSERT INTO users VALUES (?,?)",(cgi.escape(username,quote=True),cgi.escape(pw,quote=True)))
@@ -81,10 +70,7 @@ def existingName(username):
     for x in users:
         if (username == x):
             return True
-            ## I (Brian) don't this is right
-            ##else:
-            ##     return False
-    return False ## I think this IS right
+    return False 
 
 def updatePass(username, oldpw, newpw):
     username = cgi.escape(username,quote=True)
@@ -92,9 +78,13 @@ def updatePass(username, oldpw, newpw):
     newpw = cgi.escape(newpw,quote=True)
     conn = sqlite3.connect('data.db')
     c = conn.cursor()
-    c.execute("UPDATE users SET pw = ? WHERE username = ? and pw = ?", (newpw,username,oldpw)) 
-    conn.commit()
-    print "updated password"
+    if getUser(username)['pw']==oldpw:
+        c.execute("UPDATE users SET pw = ? WHERE username = ? and pw = ?", (newpw,username,oldpw)) 
+        conn.commit()
+        print "updated password"
+        return True
+    else:
+        return False
 
 def addPlace(placename, lat, lng, adderID, imgsrc):
     conn = sqlite3.connect('data.db')
