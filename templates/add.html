@@ -33,7 +33,7 @@
 	    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo">
     </script>
     <script type="text/javascript">
-      <!-- This function initializes the map-->
+      /* This function initializes the map */
       function initialize() {
       var myLatlng = new google.maps.LatLng(40.7127, -74.0059);
       var mapOptions = { 
@@ -57,8 +57,14 @@
       map.setCenter(location)
       }
 
-      marker.setMap(map); 
-      document.getElementById("latlng").value=myLatlng
+      marker.setMap(map);
+
+      google.maps.event.addListener(marker,'drag',function(){
+	  document.getElementById("lat").value = marker.getPosition().lat();
+	  document.getElementById("lng").value = marker.getPosition().lng();
+	  console.log('changing location');
+      });
+	  
       
       document.getElementById('map-canvas').style.height = '400px';
       document.getElementById('map-canvas').style.width = '95%';
@@ -68,8 +74,10 @@
       console.log('working');
       console.log(document.getElementById('map-canvas'));
       console.log(map);
+      console.log(myLatlng.lat());  
       }    
-      google.maps.event.addDomListener(window, 'load', initialize);
+     google.maps.event.addDomListener(window, 'load', initialize);
+
     </script>
   </head>
   <body ><!--onload="initialize()"> <!--What does the onload thing do and why do you need both this and the addDomListener event-->
@@ -82,11 +90,12 @@
 	<input type="text" name="placename" placeholder="placename">
 	<br><br>
 	<!-- replace lat/lng with google maps api, and likewise for other stuff the user MIGHT not know-->
-	<input type="text" name="lat" placeholder="lat">
-	<input type="text" name="lng" placeholder="lng">
-	<input type="text" name="adderID" placeholder="adderID">
+	<!-- <input type="text" name="lat" placeholder="lat"> -->
+	<!-- <input type="text" name="lng" placeholder="lng"> -->
+	<!-- <input type="text" name="adderID" placeholder="adderID"> -->
 	<input type="text" name="imgsrc" placeholder="imgsrc">
-	<input type="hidden" id="latlng" name="latlng">
+	<input type="hidden" id="lat" name="lat">
+	<input type="hidden" id="lng" name="lng">
 	<input type="submit" value="Add">
       </form>	
     </p>
