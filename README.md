@@ -3,7 +3,7 @@
 ## Links ##
 
 Website: [http://godega.blockhousebodega.com](http://godega.blockhousebodega.com)
-Youtube Video: COMING VERY SOON
+Youtube Video: [https://www.youtube.com/watch?v=WCpPqaUT-Xs&feature=youtu.be] (https://www.youtube.com/watch?v=WCpPqaUT-Xs&feature=youtu.be)
 
 ## What ##
 
