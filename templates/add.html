@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html>
+    <!-- <style type="text/css">
+	 #map_canvas {
+	 height: 380px;
+	 width: 550px;
+	 position: static;
+	 top: 100px;
+	 left: 200px;
+	 }
+	 </style> --><head>
   <style type="text/css">
+   /* #map-canvas {
+      width: 50%;
+      position: static; <!--What does this do?-->
+      } */
     #map_canvas {
-    height: 380px;
+    height: 500px;
     width: 550px;
     position: static;
     top: 100px;
     left: 200px;
     }
-  </style>
-  <head>
-  <style type="text/css">
-    #map-canvas {
-    width: 50%;
-    position: static; <!--What does this do?-->
-   }
    <!-- html, body, #map-canvas{ height:50%; margin: 0; padding: 0;}-->
   </style>
   <title>Hole In The Wall</title>
@@ -27,19 +33,28 @@
     <!-- This function initializes the map-->
     function initialize() {
     var mapOptions = { 
-    <!--Add a center and stuff here-->
+    /* Add a center and stuff here */
     center: { lat: -34.397, lng: 150.644},
     zoom: 8
     };
     var map = new google.maps.Map(document.getElementById('map-canvas'),
     mapOptions);
     
-    var pos = new google.maps.LatLng(0,0);  <!--What does this line do lol--> 
+	var pos = new google.maps.LatLng(0,0);  // What does this line do lol
+	document.getElementById('map-canvas').style.height = '400px';
+	document.getElementById('map-canvas').style.width = '95%';
+	document.getElementById('map-canvas').style.marginLeft = 'auto';
+	document.getElementById('map-canvas').style.marginRight = 'auto';
+	google.maps.event.trigger(map, 'resize');
+	console.log('working');
+	console.log(document.getElementById('map-canvas'));
+	console.log(map);
     }
-    google.maps.event.addDomListener(window, 'load', initialize);
+   google.maps.event.addDomListener(window, 'load', initialize);
+
   </script>
   </head>
-  <body onload="initialize()"> <!--What does the onload thing do and why do you need both this and the addDomListener event-->
+  <body ><!--onload="initialize()"> <!--What does the onload thing do and why do you need both this and the addDomListener event-->
     <ul id="menu">
       <div id="username">{{username}}</div>
       <li><a href="/logout">Logout</a></li>
