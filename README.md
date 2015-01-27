@@ -1,10 +1,15 @@
-# Hole In The Wall (Insert Actual Name Here) #
+# Go-Dega #
+
+## Links ##
+
+Website: [http://godega.blockhousebodega.com](http://godega.blockhousebodega.com)
+Youtube Video: COMING VERY SOON
 
 ## What ##
 
 In a big city like NYC, everyone has a hole-in-the-wall favorite place to eat, hang out, ect. This app provides a means for people to find and share fun and generally unknown places aroud the city.
 
-## What ##
+## Who ##
 
 Anya Hargil, Brian Sapozhnikov, Maria Vasilkin, Sunnam Quispe
 
