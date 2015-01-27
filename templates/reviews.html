@@ -1,43 +1,76 @@
 <html>
-    <head>
-<link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/slate/bootstrap.min.css">
-	<link rel="stylesheet" href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css">	
+  <head>
+    <style type="text/css">
+      #map-canvas {
+      width: 50%;
+      position: static;
+      }
+    </style>
     <title>Hole In The Wall</title>
+    <link rel="stylesheet" href="../static/style.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/slate/bootstrap.min.css">
+    <link rel="stylesheet" href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css">
+    <!--MAP STUFF--> 
+    <script type="text/javascript"
+	    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo">
+    </script>
+    <script type="text/javascript">
+      <!-- This function initializes the map-->
+      function initialize() {
+      var myLatlng = new google.maps.LatLng({{lat}},{{lng}});
+      <!--var myLatlng = new google.maps.LatLng(40.7127,-74.0059);
+	  (Use for testing outside of app.py)-->
+      var mapOptions = { 
+      center: myLatlng,
+      zoom: 17
+      };
+
+      var map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+      
+      var marker = new google.maps.Marker({
+      position: myLatlng,
+      });
+
+      marker.setMap(map); 
+      
+      document.getElementById('map-canvas').style.height = '300px';
+      document.getElementById('map-canvas').style.width = '50%';
+      document.getElementById('map-canvas').style.marginLeft = 'auto';
+      document.getElementById('map-canvas').style.marginRight = 'auto';
+      google.maps.event.trigger(map, 'resize');
+      console.log('working');
+      console.log(document.getElementById('map-canvas'));
+      console.log(map);
+      }    
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
     
   </head>
   <body>
-      <div class=“container”>
-	<div class=“jumbotron”>
-    <ul id="menu">
-      <div id="name">{{name.username|safe}}</div>
-      <li><a href="/about">About</a></li>
-      <li><a href="/search">Search</a></li>
-      <li><a href="/settings">Change Settings</a></li>
-      <li><a href="/logout">Logout</a></li>
-      <!-- I think above is more recent than below
-       <div id="name">{{username}}</div>
-       <li><a href="logout">Logout</a></li>
-       <li><a href="settings">Change Settings</a></li>
-       <li><a href="about">About</a></li>
-       <li><a href="search">Search</a></li>
-       <li><a href="reviews">Reviews</a></li>
-       >>>>>>> maps-api -->
-    </ul>
-    <p class="box">
-      Hello and welcome to Hole In The Wall!<br><br>
-	{{place.placename|safe}}
-	<br>
-	{% for i in reviews %}
-	<div class="review">
-	  <!--here's how to make the comments look normal and not like
-  a dictionary :P -->
-	  {{users[reviews[i].authorID].username|safe}} said {{reviews[i].content|safe}} and
-  gave it {{reviews[i].rating}} stars
-	</div>
-	{% endfor %}
-	<br>
-	<form method="POST">
+    <div class="container">
+      <div class="jumbotron">
+	<ul id="menu">
+	  <div id="name">{{name.username|safe}}</div>
+	  <li><a href="/about">About</a></li>
+	  <li><a href="/search">Search</a></li>
+	  <li><a href="/settings">Change Settings</a></li>
+	  <li><a href="/logout">Logout</a></li>
+	</ul>
+	<p class="box">
+	  Hello and welcome to Hole In The Wall!<br><br>
+	  {{place.placename|safe}}
+	  <div id="map-canvas" style="width: 100%; height: 100%"></div>
+	  <br>
+	  {% for i in reviews %}
+	  <div class="review">
+	    <!--here's how to make the comments look normal and not like
+		a dictionary :P -->
+	    {{users[reviews[i].authorID].username|safe}} said {{reviews[i].content|safe}} and
+	    gave it {{reviews[i].rating}} stars
+	  </div>
+	  {% endfor %}
+	  <br>
+	  <form method="POST">
 	    Please add a review:
 	    <br>
 	    How many stars would you give this establishment?
@@ -57,18 +90,10 @@
 	    <textarea name="myTextBox" cols="50" rows="5" placeholder="Enter your comments..."></textarea>
 	    <br><br>
 	    <input type="submit" value="Submit">
-	</form>
-    </p>
-    {% include 'messages.html' %}
- <iframe
-    width="600"
-    height="450"
-    frameborder="0" style="border:0"
-    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCdPlCvmkme1IQ3GRS_y5KMR5tUyAMGyUo
-      &q={{username}}
-      &attribution_source=Google+Maps+Embed+API
-      &attribution_web_url=our url">
-//need to escape characters for the name though
-  </iframe>
+	  </form>
+	</p>
+	{% include 'messages.html' %}
+      </div>
+    </div>
   </body>
 </html>
