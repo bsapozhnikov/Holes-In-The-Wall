@@ -2,7 +2,10 @@
 
 ## Links ##
 
-Website: [http://godega.blockhousebodega.com](http://godega.blockhousebodega.com)
+Website: [http://godega.csproject.org/](http://godega.csproject.org/)
+or
+[http://104.236.250.49/](http://104.236.250.49/)
+
 Youtube Video: [https://www.youtube.com/watch?v=WCpPqaUT-Xs&feature=youtu.be] (https://www.youtube.com/watch?v=WCpPqaUT-Xs&feature=youtu.be)
 
 ## What ##
